@@ -13,6 +13,20 @@ Send a POST request::
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 import SocketServer
 import cgi
+import pymongo
+import sys
+from datetime import datetime
+from threading import Thread
+from time import sleep
+
+
+def upload_to_server(value):
+	client = pymongo.MongoClient("ds161475.mlab.com",61475)
+	db=client["p-fire"]
+	db.authenticate('purple-daddy', 'pdaddy')
+	id_back=db.purplegarage.insert_one({"value":value,"time":datetime.now()})
+	print id_back.inserted_id
+	print value
 
 class S(BaseHTTPRequestHandler):
     def _set_headers(self):
@@ -34,15 +48,23 @@ class S(BaseHTTPRequestHandler):
         elif ctype == 'application/x-www-form-urlencoded':
             length = int(self.headers.getheader('content-length'))
             postvars = cgi.parse_qs(self.rfile.read(length), keep_blank_values=1)
+	    if 'noise' in postvars:
+		print postvars.get('noise')[0]
+  		thread = Thread(target = upload_to_server, args = (10, ))
+		thread.start()
+	        thread.join()
+	    else:
+		print 'not found bro'
         else:
             postvars = {}
-	print postvars
+
       
 def run(server_class=HTTPServer, handler_class=S, port=80):
     server_address = ('', port)
     httpd = server_class(server_address, handler_class)
     print 'Starting httpd...'
     httpd.serve_forever()
+
 
 if __name__ == "__main__":
     from sys import argv
