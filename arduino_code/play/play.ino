@@ -1,29 +1,6 @@
 /*
-  Analog Input
- Demonstrates analog input by reading an analog sensor on analog pin 0 and
- turning on and off a light emitting diode(LED)  connected to digital pin 13.
- The amount of time the LED will be on and off depends on
- the value obtained by analogRead().
 
- The circuit:
- * Potentiometer attached to analog input 0
- * center pin of the potentiometer to the analog pin
- * one side pin (either one) to ground
- * the other side pin to +5V
- * LED anode (long leg) attached to digital output 13
- * LED cathode (short leg) attached to ground
-
- * Note: because most Arduinos have a built-in LED attached
- to pin 13 on the board, the LED is optional.
-
-
- Created by David Cuartielles
- modified 30 Aug 2011
- By Tom Igoe
-
- This example code is in the public domain.
-
- http://www.arduino.cc/en/Tutorial/AnalogInput
+ Roughly Created by Kenny Ma
 
  */
 #include <Process.h>
@@ -47,6 +24,8 @@ void loop() {
   Serial.println(sensorValue);
   String curlCmd; // Where we'll put our curl command
   Serial.println("hey"); // Print command for debug
+  //Don't post anything if we don't have any sound
+  if (sensorValue>0){
   Process postProcess; 
   String first="curl -d \"noise=";
   first+=sensorValue;
@@ -60,7 +39,10 @@ void loop() {
     Serial.print(c);
   }
   Serial.flush();
-  
+
+  }else{
+  //do nothing
+  }
   delay(3000);
 }
 
