@@ -50,7 +50,7 @@ class S(BaseHTTPRequestHandler):
             postvars = cgi.parse_qs(self.rfile.read(length), keep_blank_values=1)
 	    if 'noise' in postvars:
 		print postvars.get('noise')[0]
-  		thread = Thread(target = upload_to_server, args = (10, ))
+  		thread = Thread(target = upload_to_server, args = (int(postvars.get('noise')[0]), ))
 		thread.start()
 	        thread.join()
 	    else:
