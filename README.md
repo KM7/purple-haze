@@ -13,6 +13,7 @@ TODO:
 Server side: 
 1.Don't publish any data if the loudness is less than 1 (which mean quite) -----DONE
 2.Instead of using the sound info in that moment, try to get the maximum value during that period to achieve a better result with more information resolution.
+3.Instead of running it manually each time start the server,do a automatic script
 
 Front-end:
 Create a proper JSON parsing method that can queue by day(or a specific period of time)
